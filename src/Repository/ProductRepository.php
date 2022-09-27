@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -51,6 +52,24 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /** 
+     * Retrieve the list of active orders with all their actives packages
+     * @param $page
+     * @return Paginator
+     */
+   public function getProducts($page){
+        $pageSize = 6;
+        $firstResult = ($page - 1) * $pageSize;
+ 
+        $query = $this->createQueryBuilder('p')
+            ->setFirstResult($firstResult)
+            ->setMaxResults($pageSize)
+            ->getQuery()
+        ;
+       
+        return new Paginator($query, true);
+   }
 
 //    /**
 //     * @return Product[] Returns an array of Product objects

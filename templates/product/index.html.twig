@@ -67,16 +67,22 @@
                 <div class="card bg-light mb-3">
                     <div class="card-header bg-success text-white text-uppercase">Dernier produit</div>
                     <div class="card-body">
-                        <img class="img-fluid" src="https://dummyimage.com/600x400/55595c/fff" />
-                        <h5 class="card-title mt-3">Produit</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                        <img class="img-fluid" src="{{ latestProduct.image }}" />
+                        <h5 class="card-title mt-3">{{ latestProduct.name }}</h5>
+                        <p class="card-text">{{ latestProduct.description }}</p>
 
                         <div class="row">
                             <div class="col">
-                                <p class="btn btn-danger w-100">99,00 &euro;</p>
+                                <p class="btn btn-danger w-100">
+                                    {% if latestProduct.promotion %}
+                                        {{ (latestProduct.price*(1-latestProduct.promotion/100)/100) | number_format(2, '.', ' ') }} &euro;
+                                    {% else %}
+                                        {{ (latestProduct.price/100) | number_format(2, '.', ' ') }} &euro;
+                                    {% endif %}
+                                </p>
                             </div>
                             <div class="col">
-                                <a href="product.html" class="btn btn-success w-100">Voir</a>
+                                <a href="{{ path('products_show', {'slug': latestProduct.slug }) }}" class="btn btn-success w-100">Voir</a>
                             </div>
                         </div>
                     </div>
@@ -84,121 +90,48 @@
             </div>
             <div class="col">
                 <div class="row">
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title"><a href="product.html" title="View Product">Produit</a></h4>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                <div class="row">
-                                    <div class="col">
-                                        <p class="btn btn-danger w-100">99,00 &euro;</p>
-                                    </div>
-                                    <div class="col">
-                                        <a href="#" class="btn btn-success w-100">Ajouter</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title"><a href="product.html" title="View Product">Produit</a></h4>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                <div class="row">
-                                    <div class="col">
-                                        <p class="btn btn-danger w-100">99,00 &euro;</p>
-                                    </div>
-                                    <div class="col">
-                                        <a href="#" class="btn btn-success w-100">Ajouter</a>
+                    {% for product in products %}
+                        <div class="col-12 col-md-6 col-lg-4 mb-4">
+                            <div class="card">
+                                <img class="card-img-top" src="{{ product.image }}" alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title"><a href="product.html" title="View Product">{{ product.name }}</a></h4>
+                                    <p class="card-text">{{ product.description }}</p>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="btn btn-danger w-100">
+                                                {% if product.promotion %}
+                                                    {{ (product.price*(1-product.promotion/100)/100) | number_format(2, '.', ' ') }} &euro;
+                                                {% else %}
+                                                    {{ (product.price/100) | number_format(2, '.', ' ') }} &euro;
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                        <div class="col">
+                                            <a href="{{ path('cart_index') }}" class="btn btn-success w-100">Ajouter</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title"><a href="product.html" title="View Product">Produit</a></h4>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                <div class="row">
-                                    <div class="col">
-                                        <p class="btn btn-danger w-100">99,00 &euro;</p>
-                                    </div>
-                                    <div class="col">
-                                        <a href="#" class="btn btn-success w-100">Ajouter</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title"><a href="product.html" title="View Product">Produit</a></h4>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                <div class="row">
-                                    <div class="col">
-                                        <p class="btn btn-danger w-100">99,00 &euro;</p>
-                                    </div>
-                                    <div class="col">
-                                        <a href="#" class="btn btn-success w-100">Ajouter</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title"><a href="product.html" title="View Product">Produit</a></h4>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                <div class="row">
-                                    <div class="col">
-                                        <p class="btn btn-danger w-100">99,00 &euro;</p>
-                                    </div>
-                                    <div class="col">
-                                        <a href="#" class="btn btn-success w-100">Ajouter</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title"><a href="product.html" title="View Product">Produit</a></h4>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                <div class="row">
-                                    <div class="col">
-                                        <p class="btn btn-danger w-100">99,00 &euro;</p>
-                                    </div>
-                                    <div class="col">
-                                        <a href="#" class="btn btn-success w-100">Ajouter</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                     <div class="col-12">
                         <nav aria-label="...">
                             <ul class="pagination">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Précédent</a>
+                                <li class="page-item {{ page<=1 ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ path('products_index', {'page': page-1}) }}" tabindex="-1">Précédent</a>
                                 </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                {% if page >= 2 %}
+                                    <li class="page-item"><a class="page-link" href="{{ path('products_index', {'page': page-1}) }}">{{ page-1 }}</a></li>
+                                {% endif %}
                                 <li class="page-item active">
-                                    <a class="page-link" href="#">2</a>
+                                    <a class="page-link" href="#">{{ page }}</a>
                                 </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Suivant</a>
+                                {% if page <= maxPage-1 %}
+                                    <li class="page-item"><a class="page-link" href="{{ path('products_index', {'page': page+1}) }}">{{ page+1 }}</a></li>
+                                {% endif %}
+                                <li class="page-item {{ page>=maxPage ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ path('products_index', {'page': page+1}) }}">Suivant</a>
                                 </li>
                             </ul>
                         </nav>

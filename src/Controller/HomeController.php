@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +15,7 @@ class HomeController extends AbstractController
     private $manager;
     private $products;
 
-    public function __construct(PersistenceManagerRegistry $doctrine, EntityManagerInterface $manager)
+    public function __construct(ManagerRegistry $doctrine, EntityManagerInterface $manager)
     {
         $this->doctrine = $doctrine;
         $this->manager = $manager;
@@ -41,7 +41,6 @@ class HomeController extends AbstractController
 
         // Latest products
         $latestProducts = $this->doctrine->getRepository(Product::class)->findLatest(4);
-        dump($this->doctrine->getRepository(Product::class));
         
         return $this->render('home/index.html.twig', [
             'sliderProducts' => $sliderProducts,
