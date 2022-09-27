@@ -50,7 +50,11 @@
                         <h4 class="card-title text-center">
                             <a href="{{ path('products_show', {'slug': favorite.slug } ) }}" title="View Product">{{ favorite.name }}</a>
                         </h4>
-                        <p class="card-text">{{ favorite.description }}</p>
+                        <p class="card-text">
+                            {% apply markdown_to_html %}
+                                {{ favorite.description }}
+                            {% endapply %}
+                        </p>
                         <div class="row">
                             <div class="col">
                                 <p class="btn btn-danger w-100">
@@ -86,7 +90,11 @@
                                         <img class="card-img-top" src="{{ latestProduct.image }}" alt="Card image cap">
                                         <div class="card-body">
                                             <h4 class="card-title"><a href="{{ path('products_show', {'slug': latestProduct.slug}) }}" title="View Product">{{ latestProduct.name }}</a></h4>
-                                            <p class="card-text">{{ latestProduct.description }}</p>
+                                            <p class="card-text">
+                                                {% apply markdown_to_html %}
+                                                    {{ latestProduct.description }}
+                                                {% endapply %}
+                                            </p>
                                             <div class="row">
                                                 <div class="col">
                                                     <p class="btn btn-danger w-100">

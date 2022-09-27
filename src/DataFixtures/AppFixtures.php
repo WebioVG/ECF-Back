@@ -16,6 +16,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
+        $faker->addProvider(new \DavidBadura\FakerMarkdownGenerator\FakerProvider($faker));
 
         // Create 10 colors and store them
         $colors = [];
@@ -43,7 +44,7 @@ class AppFixtures extends Fixture
 
                 $product
                     ->setName($productName = $faker->sentence(rand(1,3)))
-                    ->setDescription($faker->sentences(rand(2, 5), true))
+                    ->setDescription($faker->markdown())
                     ->setPrice(rand(10, 2000) * 100)
                     ->setSlug((new AsciiSlugger())->slug($productName)->lower())
                     ->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-5 years')))

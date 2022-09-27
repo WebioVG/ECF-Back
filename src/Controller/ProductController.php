@@ -43,8 +43,10 @@ class ProductController extends AbstractController
     }
 
     #[Route('/produits/{slug}', name: 'products_show')]
-    public function show(): Response
+    public function show(Product $product): Response
     {
-        return $this->render('product/show.html.twig');
+        return $this->render('product/show.html.twig', [
+            'product' => $product
+        ]);
     }
 }
