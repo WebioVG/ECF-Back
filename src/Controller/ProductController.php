@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Entity\Color;
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends AbstractController
 {
@@ -26,12 +29,16 @@ class ProductController extends AbstractController
         $products = $this->doctrine->getRepository(Product::class)->getProducts($page);
         $maxPage = (int) ceil(count($products) / 6);
         $latestProduct = $this->doctrine->getRepository(Product::class)->findLatest(1)[0];
+        $colors = $this->doctrine->getRepository(Color::class)->findAll();
+        $categories = $this->doctrine->getRepository(Category::class)->findAll();
 
         return $this->render('product/index.html.twig', [
             'products' => $products,
             'latestProduct' => $latestProduct,
             'page' => $page,
-            'maxPage' => $maxPage
+            'maxPage' => $maxPage,
+            'colors' => $colors,
+            'categories' => $categories
         ]);
     }
 

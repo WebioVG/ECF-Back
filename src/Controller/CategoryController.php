@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryController extends AbstractController
 {
-    #[Route('/categorie', name: 'category_index')]
+    #[Route('/categories', name: 'category_index')]
     public function index(): Response
     {
         return $this->render('category/index.html.twig');
