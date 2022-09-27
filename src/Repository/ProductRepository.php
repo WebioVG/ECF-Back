@@ -39,6 +39,19 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @returns Product[] Returns an array containing the given $numberOfElements latest products (createdAt field).
+     */
+    public function findLatest($numberOfElements)
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'DESC')
+            ->setMaxResults($numberOfElements)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */
