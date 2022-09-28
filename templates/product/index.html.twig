@@ -48,7 +48,7 @@
                     <div class="card-header bg-primary text-white text-uppercase"><i class="fa fa-list"></i> Catégories</div>
                     <ul class="list-group category_block">
                         {% for category in categories %}
-                            <li class="list-group-item"><a href="{{ path('category_index') }}">{{ category.name | capitalize }}</a></li>
+                            <li class="list-group-item"><a href="{{ path('category_index', {'slug': category.slug, 'page': 1}) }}">{{ category.name | capitalize }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -56,8 +56,12 @@
                     <div class="card-header bg-success text-white text-uppercase">Dernier produit</div>
                     <div class="card-body">
                         <img class="img-fluid" src="{{ latestProduct.image }}" />
-                        <h5 class="card-title mt-3">{{ latestProduct.name }}</h5>
-                        <p class="card-text">{{ latestProduct.description }}</p>
+                        <h5 class="card-title mt-3"><a href="{{ path('products_show', {'slug': latestProduct.slug}) }}">{{ latestProduct.name }}</a></h5>
+                        <p class="card-text">
+                            {% apply markdown_to_html %}
+                                {{ latestProduct.description | u.truncate(30, '...') }}
+                            {% endapply %}
+                        </p>
 
                         <div class="row">
                             <div class="col">

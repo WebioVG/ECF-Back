@@ -16,7 +16,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ path('home_index') }}">Accueil</a></li>
-                        <li class="breadcrumb-item"><a href="{{ path('category_index') }}">Catégorie</a></li>
+                        <li class="breadcrumb-item"><a href="{{ path('category_index', {'slug': product.category.slug, 'page': 1}) }}">Catégorie</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Produit</li>
                     </ol>
                 </nav>
