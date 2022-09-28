@@ -9,28 +9,24 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends AbstractController
 {
-    private $doctrine;
     private $manager;
 
-    public function __construct(ManagerRegistry $doctrine, EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
-        $this->doctrine = $doctrine;
         $this->manager = $manager;
     }
 
     #[Route('/produits/{page}', name: 'products_index', requirements: ['page' => '[0-9]'])]
     public function index($page): Response
     {
-        $products = $this->doctrine->getRepository(Product::class)->getProducts($page);
+        $products = $this->manager->getRepository(Product::class)->getProducts($page);
         $maxPage = (int) ceil(count($products) / 6);
-        $latestProduct = $this->doctrine->getRepository(Product::class)->findLatest(1)[0];
-        $colors = $this->doctrine->getRepository(Color::class)->findAll();
-        $categories = $this->doctrine->getRepository(Category::class)->findAll();
+        $latestProduct = $this->manager->getRepository(Product::class)->findLatest(1)[0];
+        $colors = $this->manager->getRepository(Color::class)->findAll();
+        $categories = $this->manager->getRepository(Category::class)->findAll();
 
         return $this->render('product/index.html.twig', [
             'products' => $products,

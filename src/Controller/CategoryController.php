@@ -6,19 +6,16 @@ use App\Entity\Category;
 use App\Entity\Color;
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryController extends AbstractController
 {
-    private $doctrine;
     private $manager;
 
-    public function __construct(ManagerRegistry $doctrine, EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
-        $this->doctrine = $doctrine;
         $this->manager = $manager;
     }
 
@@ -34,9 +31,9 @@ class CategoryController extends AbstractController
         $productsWithPagination = array_chunk($productsWithPagination, 6);
         
         $maxPage = count($productsWithPagination);
-        $latestProduct = $this->doctrine->getRepository(Product::class)->findLatest(1)[0];
-        $colors = $this->doctrine->getRepository(Color::class)->findAll();
-        $categories = $this->doctrine->getRepository(Category::class)->findAll();
+        $latestProduct = $this->manager->getRepository(Product::class)->findLatest(1)[0];
+        $colors = $this->manager->getRepository(Color::class)->findAll();
+        $categories = $this->manager->getRepository(Category::class)->findAll();
 
         return $this->render('category/index.html.twig', [
             'products' => $productsWithPagination[$page-1],

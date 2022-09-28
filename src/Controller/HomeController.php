@@ -4,22 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    private $doctrine;
     private $manager;
     private $products;
 
-    public function __construct(ManagerRegistry $doctrine, EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
-        $this->doctrine = $doctrine;
         $this->manager = $manager;
-        $this->products = $doctrine->getRepository(Product::class)->findAll();
+        $this->products = $manager->getRepository(Product::class)->findAll();
     }
 
     #[Route('/', name: 'home_index')]
@@ -40,7 +37,7 @@ class HomeController extends AbstractController
         $favoriteProduct = $this->products[rand(0, count($this->products) - 1)];
 
         // Latest products
-        $latestProducts = $this->doctrine->getRepository(Product::class)->findLatest(4);
+        $latestProducts = $this->manager->getRepository(Product::class)->findLatest(4);
         
         return $this->render('home/index.html.twig', [
             'sliderProducts' => $sliderProducts,

@@ -7,9 +7,7 @@ use App\Form\ProductType;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,12 +15,10 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class AdminController extends AbstractController
 {
-    private $doctrine;
     private $manager;
 
-    public function __construct(ManagerRegistry $doctrine, EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
-        $this->doctrine = $doctrine;
         $this->manager = $manager;
     }
 
