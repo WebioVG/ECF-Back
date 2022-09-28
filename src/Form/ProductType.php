@@ -30,6 +30,8 @@ class ProductType extends AbstractType
                         'message' => 'Ce champ est obligatoire.'
                     ]),
                     new Length([
+                        'min' => 3,
+                        'minMessage' => 'Le nom doit comporter au moins 3 caractères.',
                         'max' => 255,
                         'maxMessage' => 'Le nom ne peut excéder 255 caractères.'
                     ])
@@ -37,19 +39,30 @@ class ProductType extends AbstractType
             ])
             ->add('description', null, [
                 'label' => 'Description',
+                'constraints' => [
+                    new Length([
+                        'min' => 10,
+                        'minMessage' => 'La description doit comporter au moins 10 caractères.'
+                    ])
+                ]
             ])
             ->add('price', null, [
                 'label' => 'Prix (en centimes)',
                 'attr' => [
-                    'min' => 100,
+                    'min' => 9900,
+                    'max' => 100000
                 ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Ce champ est obligatoire.'
                     ]),
                     new GreaterThan([
-                        'value' => 100,
-                        'message' => 'Le prix ne peut pas être inférieur à 1€.'
+                        'value' => 9900,
+                        'message' => 'Le prix ne peut pas être inférieur à 99€.'
+                    ]),
+                    new LessThan([
+                        'value' => 100000,
+                        'message' => 'Le prix ne peut pas excéder 1000€'
                     ])
                 ]
             ])
