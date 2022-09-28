@@ -71,4 +71,13 @@ class AdminController extends AbstractController
             'product' => $product
         ]);
     }
+
+    #[Route('admin/produits/{id}/supprimer', name: 'admin_delete')]
+    public function delete(Product $product)
+    {
+        $this->manager->remove($product);
+        $this->manager->flush();
+
+        return $this->redirectToRoute('admin_list');
+    }
 }

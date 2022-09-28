@@ -30,7 +30,7 @@
                         <td>{{ (product.price/100) | number_format(2, '.') }} €</td>
                         <td>
                             <a class="btn btn-primary" href="{{ path('admin_edit', {'id': product.id}) }}">Modifier</a>
-                            <a class="btn btn-danger">Supprimer</a>
+                            <a class="btn btn-danger" href="{{ path('admin_delete', {'id': product.id}) }}">Supprimer</a>
                         </td>
                     </tr>
                 {% endfor %}
