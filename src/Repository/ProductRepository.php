@@ -54,11 +54,11 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /** 
-     * Retrieve the list of active orders with all their actives packages
+     * Retrieve the list of products matching the given $page.
      * @param $page
      * @return Paginator
      */
-   public function getProducts($page){
+    public function getProducts($page){
         $pageSize = 6;
         $firstResult = ($page - 1) * $pageSize;
  
@@ -69,7 +69,7 @@ class ProductRepository extends ServiceEntityRepository
         ;
        
         return new Paginator($query, true);
-   }
+    }
 
 //    /**
 //     * @return Product[] Returns an array of Product objects
