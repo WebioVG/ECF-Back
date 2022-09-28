@@ -1,0 +1,10 @@
+{% form_theme userForm 'bootstrap_5_layout.html.twig' %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription - {{ parent() }}{% endblock %}
+
+{% block body %}
+    {{ form_start(userForm) }}
+    {{ form_end(userForm) }}
+{% endblock %}
