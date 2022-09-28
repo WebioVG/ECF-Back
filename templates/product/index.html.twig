@@ -86,7 +86,7 @@
                                     <h4 class="card-title"><a href="{{ path('products_show', {'slug': product.slug }) }}" title="View Product">{{ product.name }}</a></h4>
                                     <p class="card-text">
                                         {% apply markdown_to_html %}
-                                            {{ product.description }}
+                                            {{ product.description | u.truncate(30, '...', false) }}
                                         {% endapply %}
                                     </p>
                                     <div class="row">
