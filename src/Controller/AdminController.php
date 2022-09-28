@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,8 +51,10 @@ class AdminController extends AbstractController
         $creationForm->handleRequest($request);
 
         if ($creationForm->isSubmitted() && $creationForm->isValid()) {
-            $product->setSlug((new AsciiSlugger())->slug($request->get('name'))->lower());
-            
+            // dd($request, $request->get('product')['name']);
+            $product->setSlug((new AsciiSlugger())->slug($request->get('product')['name'])->lower());
+            $product->setCreatedAt(DateTimeImmutable::createFromMutable(new DateTime()));
+
             $this->manager->persist($product);
             $this->manager->flush();
 
