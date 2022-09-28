@@ -5,6 +5,16 @@
 {% block title %}Admin - {{ parent() }}{% endblock %}
 
 {% block body %}
+    <div class="pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">
+            {% if editMode %}
+                Editer le produit {{ product.name }}
+            {% else %}
+                Ajouter un produit
+            {% endif %}
+        </h1 class="h2">
+    </div>
+
     {{ form_start(creationForm) }}
     {{ form_end(creationForm) }}
 {% endblock %}

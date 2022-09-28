@@ -43,17 +43,21 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/produits/nouveau', name: 'admin_create')]
-    public function create(Request $request): Response
+    #[Route('/admin/produits/{id}/modifier', name: 'admin_edit')]
+    public function createOrEdit(Request $request, Product $product = null): Response
     {
-        $product = new Product();
+        if (! $product) {
+            $product = new Product();
+        }
         $creationForm = $this->createForm(ProductType::class, $product);
 
         $creationForm->handleRequest($request);
 
         if ($creationForm->isSubmitted() && $creationForm->isValid()) {
-            // dd($request, $request->get('product')['name']);
-            $product->setSlug((new AsciiSlugger())->slug($request->get('product')['name'])->lower());
-            $product->setCreatedAt(DateTimeImmutable::createFromMutable(new DateTime()));
+            $product->setSlug((new AsciiSlugger())->slug($request->request->all()['product']['name'])->lower());
+            if (! $product->getId()) {
+                $product->setCreatedAt(DateTimeImmutable::createFromMutable(new DateTime()));
+            }
 
             $this->manager->persist($product);
             $this->manager->flush();
@@ -62,7 +66,9 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/create.html.twig', [
-            'creationForm' => $creationForm->createView()
+            'creationForm' => $creationForm->createView(),
+            'editMode' => $product->getId() !== null,
+            'product' => $product
         ]);
     }
 }
