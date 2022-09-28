@@ -1,11 +1,11 @@
 {% extends 'admin.html.twig' %}
 
-{% block title %}Adin - ECF Back{% endblock %}
+{% block title %}Admin - {{ parent() }}{% endblock %}
 
 {% block body %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Produits</h1>
-        <a class="btn btn-primary" href="">Créer un produit</a>
+        <a class="btn btn-primary" href="{{ path('admin_create') }}">Créer un produit</a>
     </div>
 
     <div>
@@ -20,30 +20,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>
-                        <img width="80" src="https://dummyimage.com/600x400/55595c/fff" alt="">
-                    </td>
-                    <td>Produit</td>
-                    <td>10,99 €</td>
-                    <td>
-                        <a class="btn btn-primary">Modifier</a>
-                        <a class="btn btn-danger">Supprimer</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>
-                        <img width="80" src="https://dummyimage.com/600x400/55595c/fff" alt="">
-                    </td>
-                    <td>Produit</td>
-                    <td>10,99 €</td>
-                    <td>
-                        <a class="btn btn-primary">Modifier</a>
-                        <a class="btn btn-danger">Supprimer</a>
-                    </td>
-                </tr>
+                {% for product in products %}
+                    <tr>
+                        <th scope="row">{{ product.id }}</th>
+                        <td>
+                            <img width="80" src="{{ product.image }}" alt="">
+                        </td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ (product.price/100) | number_format(2, '.') }} €</td>
+                        <td>
+                            <a class="btn btn-primary">Modifier</a>
+                            <a class="btn btn-danger">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

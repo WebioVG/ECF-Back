@@ -1,0 +1,10 @@
+{% form_theme creationForm 'bootstrap_5_layout.html.twig' %}
+
+{% extends 'admin.html.twig' %}
+
+{% block title %}Admin - {{ parent() }}{% endblock %}
+
+{% block body %}
+    {{ form_start(creationForm) }}
+    {{ form_end(creationForm) }}
+{% endblock %}
