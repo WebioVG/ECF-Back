@@ -11,6 +11,7 @@ use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class AdminController extends AbstractController
 {
@@ -48,6 +49,8 @@ class AdminController extends AbstractController
         $creationForm->handleRequest($request);
 
         if ($creationForm->isSubmitted() && $creationForm->isValid()) {
+            $product->setSlug((new AsciiSlugger())->slug($request->get('name'))->lower());
+            
             $this->manager->persist($product);
             $this->manager->flush();
 
