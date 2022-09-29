@@ -1,3 +1,5 @@
+{% form_theme contactForm 'bootstrap_5_layout.html.twig' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Contact - {{ parent() }}{% endblock %}
@@ -15,7 +17,7 @@
             <div class="col">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
+                        <li class="breadcrumb-item"><a href="{{ path('home_index') }}">Accueil</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Contact</li>
                     </ol>
                 </nav>
@@ -30,26 +32,17 @@
                     <div class="card-header bg-primary text-white"><i class="fa fa-envelope"></i> Contactez-nous.
                     </div>
                     <div class="card-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="name">Nom</label>
-                                <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Votre nom">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email">Email</label>
-                                <input type="text" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Votre email">
-                                <small id="emailHelp" class="form-text text-muted">Nous ne partagerons pas votre email.</small>
-                            </div>
-                            <div class="mb-3">
-                                <label for="message">Message</label>
-                                <textarea class="form-control" id="message" rows="6"></textarea>
-                            </div>
-                            <div class="mx-auto">
-                            <button type="submit" class="btn btn-primary text-right">Envoyer</button></div>
-                        </form>
+                        {{ form(contactForm) }}
+                        
+                        {% for message in app.flashes('confirmation') %}
+                            <p class="bg-success text-light p-2 rounded">
+                                {{ message }}
+                            </p>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
+
             <div class="col-12 col-md-4">
                 <div class="card bg-light mb-3">
                     <div class="card-header bg-success text-white text-uppercase"><i class="fa fa-home"></i> Adresse</div>

@@ -3,20 +3,26 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Form\ContactType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
     private $manager;
     private $products;
+    private $mailer;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager, MailerInterface $mailer)
     {
         $this->manager = $manager;
         $this->products = $manager->getRepository(Product::class)->findAll();
+        $this->mailer = $mailer;
     }
 
     #[Route('/', name: 'home_index')]
@@ -47,8 +53,31 @@ class HomeController extends AbstractController
     }
 
     #[Route('/contact', name: 'home_contact')]
-    public function contact(): Response
+    public function contact(Request $request): Response
     {
-        return $this->render('home/contact.html.twig');
+        $contactForm = $this->createForm(ContactType::class);
+        $contactForm->handleRequest($request);
+
+        if ($contactForm->isSubmitted() && $contactForm->isValid()) {
+            $formInfo = $request->request->all()['contact'];
+
+            $mail = (new TemplatedEmail())
+                ->from($formInfo['email'])
+                ->to('myAmazingCompanyInSiliconValley@admin.com')
+                ->subject('Contact form - '.$formInfo['subject'])
+                ->htmlTemplate('email/contact.html.twig')
+                ->context([
+                    'name' => $formInfo['name'],
+                    'message' => $formInfo['message']
+                ])
+            ;
+
+            $this->mailer->send($mail);
+            $this->addFlash('confirmation', 'Votre demande a bien été prise en compte.');
+        }
+
+        return $this->render('home/contact.html.twig', [
+            'contactForm' => $contactForm->createView()
+        ]);
     }
 }
