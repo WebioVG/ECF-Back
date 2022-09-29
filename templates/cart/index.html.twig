@@ -25,37 +25,29 @@
                             </tr>
                         </thead>
                         <tbody>
+                        {% for productInfo in cart %}
                             <tr>
-                                <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
-                                <td>Dada</td>
+                                <td><img style="max-width: 80px;" src="{{ productInfo.product.image }}" /> </td>
+                                <td>{{ productInfo.product.name }}</td>
                                 <td>En stock</td>
-                                <td><input class="form-control" type="text" value="1" /></td>
-                                <td class="text-right">124,90 €</td>
-                                <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                                <td><input class="form-control" type="number" value="{{ productInfo.quantity }}"/></td>
+                                <td class="text-right">
+                                    {% if productInfo.product.promotion %}
+                                        {{ (productInfo.product.price*(1-productInfo.product.promotion/100)/100*productInfo.quantity) | number_format(2, '.', ' ') }} &euro;
+                                    {% else %}
+                                        {{ (productInfo.product.price/100*productInfo.quantity) | number_format(2, '.', ' ') }} &euro;
+                                    {% endif %}
+                                </td>
+                                <td class="text-right"><a href="{{ path('cart_delete', {'id': loop.index - 1}) }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a> </td>
                             </tr>
-                            <tr>
-                                <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
-                                <td>Toto</td>
-                                <td>En stock</td>
-                                <td><input class="form-control" type="text" value="1" /></td>
-                                <td class="text-right">33,90 €</td>
-                                <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-                            </tr>
-                            <tr>
-                                <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
-                                <td>Titi</td>
-                                <td>En stock</td>
-                                <td><input class="form-control" type="text" value="1" /></td>
-                                <td class="text-right">70,00 €</td>
-                                <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-                            </tr>
+                        {% endfor %}
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td>Sous-Total</td>
-                                <td class="text-right">255,90 €</td>
+                                <td class="text-right">{{ (subtotal/100) | number_format(2, '.') }} €</td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -63,7 +55,13 @@
                                 <td></td>
                                 <td></td>
                                 <td>Frais de port</td>
-                                <td class="text-right">6,90 €</td>
+                                <td class="text-right">
+                                    {% if transportCost == 0 %}
+                                        Offert !
+                                    {% else %}
+                                        {{ (transportCost/100) | number_format(2, '.') }} €
+                                    {% endif %}
+                                </td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -71,7 +69,7 @@
                                 <td></td>
                                 <td></td>
                                 <td><strong>Total</strong></td>
-                                <td class="text-right"><strong>346,90 €</strong></td>
+                                <td class="text-right"><strong>{{ (total/100) | number_format(2, '.') }} €</strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -80,7 +78,7 @@
             <div class="col mb-2">
                 <div class="row">
                     <div class="col-sm-12  col-md-6">
-                        <button class="btn w-100 btn-light">Continuer vos achats</button>
+                        <a href="{{app.request.headers.get('referer')}}" class="btn w-100 btn-light">Continuer vos achats</a>
                     </div>
                     <div class="col-sm-12 col-md-6 text-right">
                         <button class="btn btn-lg w-100 btn-success text-uppercase">Commander</button>

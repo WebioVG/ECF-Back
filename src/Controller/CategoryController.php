@@ -53,7 +53,8 @@ class CategoryController extends AbstractController
     #[Route('/categorie/{slug}/reset', name: 'category_reset')]
     public function resetFilter(RequestStack $requestStack, $slug)
     {
-        $requestStack->getSession()->clear();
+        $requestStack->getSession()->remove('color[]');
+        $requestStack->getSession()->remove('colorIds');
 
         return $this->redirectToRoute('category_index', [
             'slug' => $slug,

@@ -63,7 +63,8 @@ class ProductController extends AbstractController
     #[Route('/produits/reset', name: 'products_reset')]
     public function reset(RequestStack $requestStack): Response
     {
-        $requestStack->getSession()->clear();
+        $requestStack->getSession()->remove('color[]');
+        $requestStack->getSession()->remove('colorIds');
 
         return $this->redirectToRoute('products_index', [
             'page' => 1
@@ -71,8 +72,9 @@ class ProductController extends AbstractController
     }
 
     #[Route('/produits/{slug}', name: 'products_show')]
-    public function show(Product $product, Request $request): Response
+    public function show(Product $product, Request $request, RequestStack $requestStack): Response
     {
+        // Handle review form
         $review = new Review();
         $reviewForm = $this->createForm(ReviewType::class, $review);
         $reviewForm->handleRequest($request);
@@ -88,6 +90,7 @@ class ProductController extends AbstractController
             $this->manager->flush();
         }
 
+        // Get the mean product rating
         $productReviews = $product->getReviews();
         $totalRating = 0;
         foreach ($productReviews as $review) {
@@ -95,6 +98,23 @@ class ProductController extends AbstractController
         }
         if (! empty($productReviews->toArray())) {
             $meanRating = ($totalRating / count($productReviews->toArray()));
+        }
+
+        // Add to cart
+        if ($request->request->get('color') && $request->request->get('quantity')) {
+            $session = $requestStack->getSession();
+            $productsInCart = $session->get('cart', []);
+            array_push(
+                $productsInCart,
+                [
+                    'product' => $product,
+                    'color' => $request->request->get('color'),
+                    'quantity' => $request->request->get('quantity')
+                ]
+            );
+            $session->set('cart', $productsInCart);
+
+            return $this->redirectToRoute('cart_index');
         }
 
         return $this->render('product/show.html.twig', [
