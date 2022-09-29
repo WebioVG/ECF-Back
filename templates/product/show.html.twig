@@ -87,12 +87,14 @@
                                 <li class="list-inline-item"><i class="fa fa-phone fa-2x"></i><br/>+33 1 22 54 65 60</li>
                             </ul>
                         </div>
-                        <div class="reviews_product p-3 mb-2 ">
-                            {{ productReviews | length }} avis
-                            {% for i in range(0, (meanRating | round) - 1) %}
-                                <i class="fa fa-star"></i>
-                            {% endfor %}
-                            ({{ meanRating | number_format(1) }}/5)
+                        <div class="reviews_product p-3 mb-2">
+                            {% if meanRating %}
+                                {{ productReviews | length }} avis
+                                {% for i in range(0, (meanRating | round) - 1) %}
+                                    <i class="fa fa-star"></i>
+                                {% endfor %}
+                                ({{ meanRating | number_format(1) }}/5)
+                            {% endif %}
                             <a class="pull-right" href="#reviews">Voir tous les avis</a>
                         </div>
                         <div class="datasheet p-3 mb-2 bg-info text-white">

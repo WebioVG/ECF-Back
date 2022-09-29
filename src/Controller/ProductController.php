@@ -93,12 +93,14 @@ class ProductController extends AbstractController
         foreach ($productReviews as $review) {
             $totalRating += $review->getRating();
         }
-        $meanRating = $totalRating / count($productReviews->toArray());
+        if (! empty($productReviews->toArray())) {
+            $meanRating = ($totalRating / count($productReviews->toArray()));
+        }
 
         return $this->render('product/show.html.twig', [
             'product' => $product,
             'productReviews' => $productReviews,
-            'meanRating' => $meanRating,
+            'meanRating' => $meanRating ?? null,
             'reviewForm' => $reviewForm->createView()
         ]);
     }
