@@ -28,18 +28,21 @@
             <div class="col-12 col-md-3">
                 <div class="card bg-light mb-3">
                     <div class="card-header bg-primary text-white text-uppercase"><i class="fa fa-list"></i> Filtres</div>
-                    <form action="" method="post">
+                    <form action="{{ path('products_index', {'page': 1}) }}" method="post">
                         <ul class="list-group">
                             {% for color in colors %}
                                 <li class="list-group-item">
                                     <div class="form-check">
-                                        <input type="checkbox" name="color[]" value="{{ color.id }}"class="form-check-input" style="border-color: {{ color.hex }};" id="color-{{ color.name }}">
+                                        <input type="checkbox" name="color[]" {% if color.id in app.session.get('colorIds') %}checked{% endif %} value="{{ color.id }}"class="form-check-input" style="border-color: {{ color.hex }};" id="color-{{ color.name }}">
                                         <label class="form-check-label" for="color-bleu">{{ color.name }}</label>
                                     </div>
                                 </li>
                             {% endfor %}
                             <li class="list-group-item">
                                 <button class="btn btn-primary w-100">Filtrer</button>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="btn btn-primary w-100" href="{{ path('products_reset') }}">Reset</a>
                             </li>
                         </ul>
                     </form>
