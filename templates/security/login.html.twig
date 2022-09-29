@@ -7,17 +7,18 @@
         <div>Vos identifiants sont incorrects.</div>
     {% endif %}
 
-    <form action="{{ path('security_login') }}" method="post">
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="_username" id="email">
+    <h1 class="h2 text-center mt-3">Connexion</h1>
+    <form action="{{ path('security_login') }}" method="post" class="m-3 col-6 mx-auto">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" name="_username" id="email" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input type="password" name="_password" id="password" class="form-control">
         </div>
         <div>
-            <label for="password">Mot de passe</label>
-            <input type="password" name="_password" id="password">
-        </div>
-        <div>
-            <button type="submit">Se connecter</button>
+            <button class="btn btn-primary" type="submit">Se connecter</button>
         </div>
     </form>
 {% endblock %}

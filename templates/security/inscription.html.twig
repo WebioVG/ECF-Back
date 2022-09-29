@@ -5,6 +5,8 @@
 {% block title %}Inscription - {{ parent() }}{% endblock %}
 
 {% block body %}
-    {{ form_start(userForm) }}
+    <h1 class="h2 text-center mt-3">Inscription</h1>
+
+    {{ form_start(userForm, {'attr': {'class': 'm-3 col-6 mx-auto'}}) }}
     {{ form_end(userForm) }}
 {% endblock %}
