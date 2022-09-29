@@ -62,9 +62,15 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{ app.request.get('_route') == 'admin_list' ? 'active' : ''}}" href="{{ path('admin_list') }}">
+                                <a class="nav-link {{ app.request.get('_route') == 'admin_products' ? 'active' : ''}}" href="{{ path('admin_products') }}">
                                     <span data-feather="file"></span>
                                     Produits
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ app.request.get('_route') == 'admin_reviews' ? 'active' : ''}}" href="{{ path('admin_reviews') }}">
+                                    <span data-feather="file"></span>
+                                    Avis
                                 </a>
                             </li>
                             <li class="nav-item">

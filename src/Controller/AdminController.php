@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\Review;
 use App\Form\ProductType;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,23 +25,35 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin', name: 'admin_index')]
+    #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
         return $this->render('admin/index.html.twig');
     }
 
-    #[Route('/admin/produits', name: 'admin_list')]
-    public function list(): Response
+    #[Route('/admin/produits', name: 'admin_products')]
+    public function listProducts(): Response
     {
         $products = $this->manager->getRepository(Product::class)->findAll();
 
-        return $this->render('admin/list.html.twig', [
+        return $this->render('admin/products.html.twig', [
             'products' => $products
+        ]);
+    }
+
+    #[Route('/admin/avis', name: 'admin_reviews')]
+    public function listReviews(): Response
+    {
+        $reviews = $this->manager->getRepository(Review::class)->findAll();
+
+        return $this->render('admin/reviews.html.twig', [
+            'reviews' => $reviews
         ]);
     }
 
     #[Route('/admin/produits/nouveau', name: 'admin_create')]
     #[Route('/admin/produits/{id}/modifier', name: 'admin_edit')]
+    #[IsGranted('ROLE_USER')]
     public function createOrEdit(Request $request, Product $product = null): Response
     {
         if (! $product) {
@@ -58,7 +72,7 @@ class AdminController extends AbstractController
             $this->manager->persist($product);
             $this->manager->flush();
 
-            return $this->redirectToRoute('admin_list');
+            return $this->redirectToRoute('admin_products');
         }
 
         return $this->render('admin/create.html.twig', [
@@ -68,12 +82,23 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('admin/produits/{id}/supprimer', name: 'admin_delete')]
+    #[Route('admin/produits/{id}/supprimer', name: 'admin_delete_product')]
+    #[IsGranted('ROLE_USER')]
     public function delete(Product $product)
     {
         $this->manager->remove($product);
         $this->manager->flush();
 
-        return $this->redirectToRoute('admin_list');
+        return $this->redirectToRoute('admin_products');
+    }
+
+    #[Route('admin/avis/{id}/supprimer', name: 'admin_delete_review')]
+    #[IsGranted('ROLE_USER')]
+    public function deleteReview(Review $review)
+    {
+        $this->manager->remove($review);
+        $this->manager->flush();
+
+        return $this->redirectToRoute('admin_reviews');
     }
 }

@@ -1,0 +1,38 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Admin - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Avis</h1>
+    </div>
+
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Note</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for review in reviews %}
+                    <tr>
+                        <th scope="row">{{ review.id }}</th>
+                        <td>{{ review.user.email }}</td>
+                        <td>{{ review.rating }}</td>
+                        <td>{{ review.description }} €</td>
+                        <td>
+                            <form action="{{ path('admin_delete_review', {'id': review.id}) }}" method="post" style="display: inline;">
+                                <button class="btn btn-danger" type="submit">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
