@@ -33,13 +33,32 @@ class ProductController extends AbstractController
     public function index($page, Request $request, RequestStack $requestStack, ProductsManager $productsManager): Response
     {
         $session = $requestStack->getSession();
-        $products = $productsManager->getProductsFromProducts($request, $session, $page)['products'];
-        $maxPage = $productsManager->getProductsFromProducts($request, $session, $page)['maxPage'];
+
+        if ($request->query->get('recherche')) {
+            $search = $request->query->get('recherche') ?? null;
+            $products = $this->manager->getRepository(Product::class)->searchFor($search);
+            $products = array_chunk($products, 6);
+            $maxPage = count($products);
+        } else {
+            $products = $productsManager->getProductsFromProducts($request, $session, $page)['products'];
+            $maxPage = $productsManager->getProductsFromProducts($request, $session, $page)['maxPage'];
+        }
+
         $latestProduct = $this->manager->getRepository(Product::class)->findLatest(1)[0];
         $colors = $this->manager->getRepository(Color::class)->findAll();
         $categories = $this->manager->getRepository(Category::class)->findAll();
         
-        if ($session->get('color[]', null) !== null && ! empty($products)) {
+        if ($request->query->get('recherche') && ! empty($products)) {
+            return $this->render('product/index.html.twig', [
+                'products' => $products[$page - 1],
+                'latestProduct' => $latestProduct,
+                'page' => $page,
+                'maxPage' => $maxPage,
+                'colors' => $colors,
+                'categories' => $categories,
+                'search' => $search
+            ]);
+        } elseif (($session->get('color[]', null) !== null) && ! empty($products)) {
             return $this->render('product/index.html.twig', [
                 'products' => $products[$page - 1],
                 'latestProduct' => $latestProduct,

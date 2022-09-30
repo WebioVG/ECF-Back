@@ -40,11 +40,11 @@
                         </li>
                     </ul>
 
-                    <form class="form-inline my-2 my-lg-0 d-inline-flex">
+                    <form action="{{ path('products_index', {'page': 1}) }}" method="get" class="form-inline my-2 my-lg-0 d-inline-flex">
                         <div class="input-group input-group-sm">
-                            <input type="text" class="form-control" placeholder="Recherche...">
+                            <input type="text" name="recherche" class="form-control" placeholder="Recherche...">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-secondary btn-number">
+                                <button type="submit" class="btn btn-secondary btn-number">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>

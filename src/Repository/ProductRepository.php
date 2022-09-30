@@ -52,6 +52,18 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    /**
+     * @returns Product[] Returns an array containing the products whose name match the given $search.
+     */
+    public function searchFor(string $search)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.name LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     /** 
      * Retrieve the list of products matching the given $page.

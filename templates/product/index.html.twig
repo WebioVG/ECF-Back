@@ -118,19 +118,43 @@
                         <nav aria-label="...">
                             <ul class="pagination">
                                 <li class="page-item {{ page<=1 ? 'disabled' : '' }}">
-                                    <a class="page-link" href="{{ path('products_index', {'page': page-1}) }}" tabindex="-1">Précédent</a>
+                                    <a class="page-link" href="
+                                        {% if search is defined %}
+                                            {{ path('products_index', {'page': page-1, 'recherche': search}) }}
+                                        {% else %}
+                                            {{ path('products_index', {'page': page-1}) }}
+                                        {% endif %}
+                                    " tabindex="-1">Précédent</a>
                                 </li>
                                 {% if page >= 2 %}
-                                    <li class="page-item"><a class="page-link" href="{{ path('products_index', {'page': page-1}) }}">{{ page-1 }}</a></li>
+                                    <li class="page-item"><a class="page-link" href="
+                                        {% if search is defined %}
+                                            {{ path('products_index', {'page': page+1, 'recherche': search}) }}
+                                        {% else %}
+                                            {{ path('products_index', {'page': page+1}) }}
+                                        {% endif %}
+                                    ">{{ page-1 }}</a></li>
                                 {% endif %}
                                 <li class="page-item active">
                                     <a class="page-link" href="#">{{ page }}</a>
                                 </li>
                                 {% if page <= maxPage-1 %}
-                                    <li class="page-item"><a class="page-link" href="{{ path('products_index', {'page': page+1}) }}">{{ page+1 }}</a></li>
+                                    <li class="page-item"><a class="page-link" href="
+                                        {% if search is defined %}
+                                            {{ path('products_index', {'page': page+1, 'recherche': search}) }}
+                                        {% else %}
+                                            {{ path('products_index', {'page': page+1}) }}
+                                        {% endif %}
+                                    ">{{ page+1 }}</a></li>
                                 {% endif %}
                                 <li class="page-item {{ page>=maxPage ? 'disabled' : '' }}">
-                                    <a class="page-link" href="{{ path('products_index', {'page': page+1}) }}">Suivant</a>
+                                    <a class="page-link" href="
+                                        {% if search is defined %}
+                                            {{ path('products_index', {'page': page+1, 'recherche': search}) }}
+                                        {% else %}
+                                            {{ path('products_index', {'page': page+1}) }}
+                                        {% endif %}
+                                    ">Suivant</a>
                                 </li>
                             </ul>
                         </nav>
