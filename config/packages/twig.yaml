@@ -1,8 +1,8 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
+    globals:
+        app_name: 'webiovg'
 
 when@test:
     twig:
         strict_variables: true
-        globals:
-            app_name: 'webiovg'
