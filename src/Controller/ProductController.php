@@ -97,6 +97,7 @@ class ProductController extends AbstractController
         $review = new Review();
         $reviewForm = $this->createForm(ReviewType::class, $review);
         $reviewForm->handleRequest($request);
+        $productReviews = $product->getReviews();
 
         if ($reviewForm->isSubmitted() && $reviewForm->isValid()) {
             $review
@@ -107,17 +108,21 @@ class ProductController extends AbstractController
 
             $this->manager->persist($review);
             $this->manager->flush();
+            
+            // Get the mean product rating
+            $totalRating = 0;
+            foreach ($productReviews as $review) {
+                $totalRating += $review->getRating();
+            }
+            if (! empty($productReviews->toArray())) {
+                $meanRating = number_format(($totalRating / count($productReviews->toArray())), 1);
+            }
+
+            $product->setRating($meanRating);
+            $this->manager->persist($review);
+            $this->manager->flush();
         }
 
-        // Get the mean product rating
-        $productReviews = $product->getReviews();
-        $totalRating = 0;
-        foreach ($productReviews as $review) {
-            $totalRating += $review->getRating();
-        }
-        if (! empty($productReviews->toArray())) {
-            $meanRating = ($totalRating / count($productReviews->toArray()));
-        }
 
         // Add to cart
         if ($request->request->get('color') && $request->request->get('quantity')) {

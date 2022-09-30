@@ -44,11 +44,15 @@ class HomeController extends AbstractController
 
         // Latest products
         $latestProducts = $this->manager->getRepository(Product::class)->findLatest(4);
+
+        // Best products
+        $bestProducts = $this->manager->getRepository(Product::class)->findBest(4);
         
         return $this->render('home/index.html.twig', [
             'sliderProducts' => $sliderProducts,
             'favorite' => $favoriteProduct,
-            'latestProducts' => $latestProducts
+            'latestProducts' => $latestProducts,
+            'bestProducts' => $bestProducts
         ]);
     }
 

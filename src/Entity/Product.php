@@ -49,6 +49,9 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Review::class, orphanRemoval: true)]
     private Collection $reviews;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $rating = null;
+
     public function __construct()
     {
         $this->colors = new ArrayCollection();
@@ -218,6 +221,18 @@ class Product
                 $review->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?float $rating): self
+    {
+        $this->rating = $rating;
 
         return $this;
     }

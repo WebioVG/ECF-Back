@@ -52,7 +52,7 @@
                         </h4>
                         <p class="card-text">
                             {% apply markdown_to_html %}
-                                {{ favorite.description }}
+                                {{ favorite.description | u.truncate(30, '...') }}
                             {% endapply %}
                         </p>
                         <div class="row">
@@ -92,7 +92,7 @@
                                             <h4 class="card-title"><a href="{{ path('products_show', {'slug': latestProduct.slug}) }}" title="View Product">{{ latestProduct.name }}</a></h4>
                                             <p class="card-text">
                                                 {% apply markdown_to_html %}
-                                                    {{ latestProduct.description }}
+                                                    {{ latestProduct.description | u.truncate(30, '...') }}
                                                 {% endapply %}
                                             </p>
                                             <div class="row">
@@ -129,74 +129,43 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm">
-                                <div class="card">
-                                    <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href="product.html" title="View Product">Produit</a></h4>
-                                        <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-                                        <div class="row">
-                                            <div class="col">
-                                                <p class="btn btn-danger w-100">99,00 &euro;</p>
-                                            </div>
-                                            <div class="col">
-                                                <a href="cart.html" class="btn btn-success w-100">Ajouter</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm">
-                                <div class="card">
-                                    <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href="product.html" title="View Product">Produit</a></h4>
-                                        <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-                                        <div class="row">
-                                            <div class="col">
-                                                <p class="btn btn-danger w-100">99,00 &euro;</p>
-                                            </div>
-                                            <div class="col">
-                                                <a href="cart.html" class="btn btn-success w-100">Ajouter</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm">
-                                <div class="card">
-                                    <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href="product.html" title="View Product">Produit</a></h4>
-                                        <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-                                        <div class="row">
-                                            <div class="col">
-                                                <p class="btn btn-danger w-100">99,00 &euro;</p>
-                                            </div>
-                                            <div class="col">
-                                                <a href="cart.html" class="btn btn-success w-100">Ajouter</a>
+                            {% for bestProduct in bestProducts %}
+                                <div class="col-3">
+                                    <div class="card">
+                                        <img class="card-img-top" src="{{ bestProduct.image }}" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h4 class="card-title"><a href="{{ path('products_show', {'slug': bestProduct.slug}) }}" title="View Product">{{ bestProduct.name }}</a></h4>
+                                            <p class="card-text">
+                                                {% for i in range(0, ((bestProduct.rating | round) - 1)) %}
+                                                    <span class="fa fa-star"></span>
+                                                {% endfor %}
+                                                 ({{ bestProduct.rating }}/5)
+                                            </p>
+                                            <p class="card-text">
+                                                {% apply markdown_to_html %}
+                                                    {{ bestProduct.description | u.truncate(30, '...') }}
+                                                {% endapply %}
+                                            </p>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <p class="btn btn-danger w-100">
+                                                        {% if bestProduct.promotion %}
+                                                            {{ (bestProduct.price*(1-bestProduct.promotion/100)/100) | number_format(2, '.', ' ') }} &euro;
+                                                        {% else %}
+                                                            {{ (bestProduct.price/100) | number_format(2, '.', ' ') }} &euro;
+                                                        {% endif %}
+                                                    </p>
+                                                </div>
+                                                <div class="col">
+                                                    <a href="{{ path('products_show', {'slug': bestProduct.slug}) }}" class="btn btn-success w-100">Ajouter</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm">
-                                <div class="card">
-                                    <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a href="product.html" title="View Product">Produit</a></h4>
-                                        <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-                                        <div class="row">
-                                            <div class="col">
-                                                <p class="btn btn-danger w-100">99,00 &euro;</p>
-                                            </div>
-                                            <div class="col">
-                                                <a href="cart.html" class="btn btn-success w-100">Ajouter</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% else %}
+                                <p class="text-danger">Aucun produit n'a encore été évalué.</p>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

@@ -87,12 +87,12 @@
                             </ul>
                         </div>
                         <div class="reviews_product p-3 mb-2">
-                            {% if meanRating %}
+                            {% if product.rating %}
                                 {{ productReviews | length }} avis
-                                {% for i in range(0, (meanRating | round) - 1) %}
+                                {% for i in range(0, (product.rating | round) - 1) %}
                                     <i class="fa fa-star"></i>
                                 {% endfor %}
-                                ({{ meanRating | number_format(1) }}/5)
+                                ({{ product.rating }}/5)
                             {% endif %}
                             <a class="pull-right" href="#reviews">Voir tous les avis</a>
                         </div>
