@@ -7,7 +7,7 @@
 
 ***
 
-<p><strong>Create a .env.local file at your the root project and configure your DATABASE_URL path by replacing the DATABASE_NAME and DATABASE_PASSWORD:</strong></p>
+<p><strong>Create a .env.local file at your root project and configure your DATABASE_URL path by replacing the DATABASE_NAME and DATABASE_PASSWORD:</strong></p>
 <p>&nbsp;&nbsp;DATABASE_URL="mysql://DATABASE_NAME:DATABASE_PASSWORD@127.0.0.1:3306/ecf-back"</p>
 
 ***
